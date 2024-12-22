@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  gpu0:
+    build: .
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
+    environment:
+      - CUDA_VISIBLE_DEVICES=0 # this is not necessary, but it's good practice
+      - PYTHONUNBUFFERED=1
+    command: python3 stress_test.py -s 38912 -r 36000
+
+  # gpu1:
+  #   build: .
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             device_ids: ['1']
+  #             capabilities: [gpu]
+  #   environment:
+  #     - CUDA_VISIBLE_DEVICES=0
+  #   command: python3 stress_test.py -s 38912 -r 36000
+
+  # Add more services (gpu2, gpu3, etc.) for each additional GPU
